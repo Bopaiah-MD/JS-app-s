@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple app for getting random authors using RandomAPI</title>
+</head>
+
+<body>
+    <h3>*******Generate Random Authors***********</h3>
+    <ul id="authorsId">
+    </ul>
+</body>
+<script>
+
+    //*************some generic fn's //*************
+    function createNode(element) {
+        return document.createElement(element);
+    }
+
+    function append(parent, el) {
+
+        return parent.appendChild(el);
+    }
+
+    //*************some generic fn's //*************
+
+    const ul = document.getElementById("authorsId");
+    const url = 'https://randomuser.me/api?results=7';
+
+    fetch(url).then((resp) => resp.json())
+        .then(function (data) {
+            console.log("DATA", data.results);
+            let authors = data.results;
+            return authors.map(function (author) {
+
+                let li = createNode('li'),
+                    img = createNode('img'),
+                    span = createNode('span');
+
+                img.src = author.picture.large;
+                span.innerHTML = `${author.name.first} ${author.name.last}`;
+
+                append(li, img);
+                append(li, span);
+                append(ul, li);
+
+            })
+
+        }).catch(function (error) {
+            console.log(JSON.stringify(error));
+        })
+</script>
+
+</html>
